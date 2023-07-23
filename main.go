@@ -24,18 +24,15 @@ func main() {
 			book.PUT("/:id", controller.UpdateBook)
 			book.DELETE("/:id", controller.DeleteBook)
 		}
-		/*
-		   TODO
-		   		user := v1.Group("/user")
-		   		{
-		   			user.GET("/", controller.GetAllUsers)
-		   			user.POST("/", controller.Register)
-		   			user.GET("/:id", controller.Profile)
-		   			user.PUT("/:id", controller.UpdateProfile)
-		   			user.DELETE("/:id", controller.DeleteAccount)
-		   		}
+		user := v1.Group("/user")
+		{
+			user.GET("/", controller.GetAllUsers)
+			user.POST("/", controller.Register)
+			user.GET("/:id", controller.Profile)
+			user.PUT("/:id", controller.UpdateProfile)
+			user.DELETE("/:id", controller.DeleteAccount)
+		}
 
-		*/
 	}
 	router.Run(":3000")
 }
