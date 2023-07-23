@@ -16,7 +16,7 @@ func GetAllUsers(c *gin.Context) {
 	})
 }
 
-func InsertUser(c *gin.Context) {
+func Register(c *gin.Context) {
 	var user entity.User
 	err := c.ShouldBind(&user)
 	if err != nil {
@@ -26,16 +26,16 @@ func InsertUser(c *gin.Context) {
 		})
 		return
 	}
-	user = service.InsertUser(user)
+	user = service.Register(user)
 	c.JSON(200, gin.H{
 		"message": "Create a new user",
 		"user":    user,
 	})
 }
 
-func GetUser(c *gin.Context) {
+func Profile(c *gin.Context) {
 	userID, _ := strconv.ParseUint(c.Param("id"), 10, 64)
-	user, err := service.GetUser(userID)
+	user, err := service.Profile(userID)
 	if err != nil {
 		c.JSON(404, gin.H{
 			"message": "error",
@@ -49,7 +49,7 @@ func GetUser(c *gin.Context) {
 	})
 }
 
-func UpdateUser(c *gin.Context) {
+func UpdateProfile(c *gin.Context) {
 	userID, _ := strconv.ParseUint(c.Param("id"), 10, 64)
 	var user entity.User
 	err := c.ShouldBind(&user)
@@ -61,7 +61,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 	user.ID = userID
-	user, err = service.UpdateUser(user)
+	user, err = service.UpdateProfile(user)
 	if err != nil {
 		c.JSON(404, gin.H{
 			"message": "error",
@@ -75,9 +75,9 @@ func UpdateUser(c *gin.Context) {
 	})
 }
 
-func DeleteUser(c *gin.Context) {
+func DeleteAccount(c *gin.Context) {
 	userID, _ := strconv.ParseUint(c.Param("id"), 10, 64)
-	err := service.DeleteUser(userID)
+	err := service.DeleteAccount(userID)
 	if err != nil {
 		c.JSON(404, gin.H{
 			"message": "error",
@@ -86,6 +86,6 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{
-		"message": "user deleted",
+		"message": "The user has been deleted",
 	})
 }

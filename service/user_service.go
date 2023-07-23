@@ -14,13 +14,13 @@ func GetAllUsers() []entity.User {
 	return Users
 }
 
-func InsertUser(user entity.User) entity.User {
+func Register(user entity.User) entity.User {
 	user.ID = uint64(len(Users) + 1)
 	Users = append(Users, user)
 	return user
 }
 
-func GetUser(userID uint64) (entity.User, error) {
+func Profile(userID uint64) (entity.User, error) {
 	for i := 0; i < len(Users); i++ {
 		if Users[i].ID == userID {
 			return Users[i], nil
@@ -29,7 +29,7 @@ func GetUser(userID uint64) (entity.User, error) {
 	return entity.User{}, errors.New("The specified user does not exist!")
 }
 
-func UpdateUser(user entity.User) (entity.User, error) {
+func UpdateProfile(user entity.User) (entity.User, error) {
 	for i := 0; i < len(Users); i++ {
 		if Users[i].ID == user.ID {
 			Users[i] = user
@@ -39,7 +39,7 @@ func UpdateUser(user entity.User) (entity.User, error) {
 	return user, errors.New("The specified user does not exist!")
 }
 
-func DeleteUser(userID uint64) error {
+func DeleteAccount(userID uint64) error {
 	for i := 0; i < len(Users); i++ {
 		if Users[i].ID == userID {
 			Users = append(Users[:i], Users[i+1:]...)
