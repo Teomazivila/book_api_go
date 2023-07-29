@@ -2,49 +2,40 @@ package service
 
 import (
 	"bookapi/entity"
+	"bookapi/repository"
 	"errors"
 )
 
 var Users []entity.User
 
-func InitializeUsers() {
-	Users = []entity.User{}
-}
 func GetAllUsers() []entity.User {
-	return Users
+	return repository.GetAllUsers()
 }
 
-func Register(user entity.User) entity.User {
+func InsertUsers(user entity.User) entity.User {
 	user.ID = uint64(len(Users) + 1)
-	Users = append(Users, user)
+	user = repository.InsertUser(user)
 	return user
 }
 
 func Profile(userID uint64) (entity.User, error) {
-	for i := 0; i < len(Users); i++ {
-		if Users[i].ID == userID {
-			return Users[i], nil
-		}
+	if user, err := repository.GetUser(userID); err == nil {
+		return user, nil
 	}
-	return entity.User{}, errors.New("The specified user does not exist!")
+	return entity.User{}, errors.New("User does not exist!")
 }
 
 func UpdateProfile(user entity.User) (entity.User, error) {
-	for i := 0; i < len(Users); i++ {
-		if Users[i].ID == user.ID {
-			Users[i] = user
-			return user, nil
-		}
+	user.ID = uint64(len(Users) + 1)
+	if user, err := repository.UpdateUser(user); err == nil {
+		return user, nil
 	}
-	return user, errors.New("The specified user does not exist!")
+	return user, errors.New("User does not exist!")
 }
 
 func DeleteAccount(userID uint64) error {
-	for i := 0; i < len(Users); i++ {
-		if Users[i].ID == userID {
-			Users = append(Users[:i], Users[i+1:]...)
-			return nil
-		}
+	if err := repository.DeleteUser(userID); err == nil {
+		return nil
 	}
-	return errors.New("The specified user does not exist!")
+	return errors.New("User does not exist!")
 }
