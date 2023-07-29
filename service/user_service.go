@@ -6,14 +6,12 @@ import (
 	"errors"
 )
 
-var Users []entity.User
-
 func GetAllUsers() []entity.User {
 	return repository.GetAllUsers()
 }
 
 func InsertUsers(user entity.User) entity.User {
-	user.ID = uint64(len(Users) + 1)
+	user.ID = 2
 	user = repository.InsertUser(user)
 	return user
 }
@@ -26,7 +24,7 @@ func Profile(userID uint64) (entity.User, error) {
 }
 
 func UpdateProfile(user entity.User) (entity.User, error) {
-	user.ID = uint64(len(Users) + 1)
+	user.ID = 2
 	if user, err := repository.UpdateUser(user); err == nil {
 		return user, nil
 	}
