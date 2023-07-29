@@ -26,7 +26,7 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
-	user = service.Register(user)
+	user = service.InsertUsers(user)
 	c.JSON(200, gin.H{
 		"message": "Create a new user",
 		"user":    user,
