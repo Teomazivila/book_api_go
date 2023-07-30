@@ -1,6 +1,6 @@
-*.env
-mariadb/
-.env
+mariadb
+*.e
 mariadb/*
 *.zip
 M4_Challenge.zip
+env

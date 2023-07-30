@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"bookapi/dto"
 	"bookapi/entity"
 	"bookapi/service"
 	"strconv"
@@ -17,7 +18,7 @@ func GetAllBooks(c *gin.Context) {
 }
 
 func InsertBook(c *gin.Context) {
-	var book entity.Book
+	var book dto.BookCreatedDTO
 	err := c.ShouldBind(&book)
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -26,10 +27,12 @@ func InsertBook(c *gin.Context) {
 		})
 		return
 	}
-	book = service.InsertBook(book)
+	userID, _ := strconv.ParseUint(c.GetString("user_id"), 10, 64)
+
+	b := service.InsertBook(book, userID)
 	c.JSON(200, gin.H{
 		"message": "insert book",
-		"book":    book,
+		"book":    b,
 	})
 }
 
@@ -77,6 +80,16 @@ func UpdateBook(c *gin.Context) {
 
 func DeleteBook(c *gin.Context) {
 	bookID, _ := strconv.ParseUint(c.Param("id"), 10, 64)
+
+	userID, _ := strconv.ParseUint(c.GetString("user_id"), 10, 64)
+
+	if !service.IsAllowedToEdit(userID, bookID) {
+		c.JSON(401, gin.H{
+			"message": "you do not have the permission - you are not the owner of this book",
+		})
+		return
+	}
+
 	err := service.DeleteBook(bookID)
 	if err != nil {
 		c.JSON(404, gin.H{

@@ -48,3 +48,9 @@ func DeleteBook(bookID uint64) error {
 	}
 	return errors.New("book do not exists")
 }
+
+func GetTheBookUsingID(bookID uint64) entity.Book {
+	var book entity.Book
+	config.Db.Preload("User").First(&book, bookID)
+	return book
+}

@@ -48,3 +48,9 @@ func DeleteUser(userID uint64) error {
 	}
 	return errors.New("requested user does not exists")
 }
+
+func GetTheUserkUsingID(userID uint64) entity.User {
+	var user entity.User
+	config.Db.Preload("User").First(&user, userID)
+	return user
+}
